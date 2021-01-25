@@ -41,7 +41,7 @@ app.post('/getdata',async (req, res) => {
     const userInfo = req.body;
 
     
-    const browser = await puppeteer.launch({headless: false});
+    const browser = await puppeteer.launch({headless: true});
 
   const page = await browser.newPage();
 
@@ -73,6 +73,10 @@ app.post('/getdata',async (req, res) => {
         res.status(200).json(result);
     });*/
 });
+
+app.post('/pdf', async (req, res) => {
+    res.json({hola: 'hola'})
+}):
 
 app.get('/', (req, res) => {
     res.contentType("text/plain");
