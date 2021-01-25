@@ -74,7 +74,7 @@ app.post('/getdata',async (req, res) => {
     });*/
 });
 
-app.post('/pdf', async (req, res) => {
+app.get('/pdf', async (req, res) => {
     res.json({hola: 'hola'})
 }):
 
