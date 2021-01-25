@@ -1,7 +1,8 @@
-const puppeteer = require('puppeteer-extra');
+/*const puppeteer = require('puppeteer-extra');
 // Add stealth plugin and use defaults (all tricks to hide puppeteer usage)
 const StealthPlugin = require('puppeteer-extra-plugin-stealth');
-puppeteer.use(StealthPlugin());
+puppeteer.use(StealthPlugin());*/
+const puppeteer = require('puppeteer');
 
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -37,7 +38,7 @@ const port = process.env.PORT || 8080;
     return results;
 };*/
 
-app.post('/getdata',async (req, res) => {
+/*app.post('/getdata',async (req, res) => {
     //const userInfo = req.body;
     const browser = await puppeteer.launch({headless: true});
 
@@ -70,9 +71,9 @@ app.post('/getdata',async (req, res) => {
     /*getAPIData(userInfo).then(result => {
         res.status(200).json(result);
     });*/
-});
+/*});*/
 
-app.get('/pdf',async (req, res) => {
+/*app.get('/pdf',async (req, res) => {
     const browser = await puppeteer.launch({headless: true});
 
     const page = await browser.newPage();
@@ -98,6 +99,28 @@ app.get('/pdf',async (req, res) => {
     
     res.contentType("text/plain");
     res.send(data);
+});*/
+
+app.get('/prueba', function(req, res) {
+    // Launching the Puppeteer controlled headless browser and navigate to the Digimon website
+    puppeteer.launch().then(async function(browser) {
+        const page = await browser.newPage();
+        await page.goto('http://digidb.io/digimon-list/');
+
+        // Targeting the DOM Nodes that contain the Digimon names
+        const digimonNames = await page.$$eval('#digiList tbody tr td:nth-child(2) a', function(digimons) {
+        // Mapping each Digimon name to an array
+            return digimons.map(function(digimon) {
+          return digimon.innerText;
+        });
+      });
+
+        // Closing the Puppeteer controlled headless browser
+        await browser.close();
+
+        // Sending the Digimon names to Postman
+        res.send(digimonNames);
+    });
 });
 
 
