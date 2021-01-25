@@ -74,9 +74,10 @@ app.post('/getdata',async (req, res) => {
     });*/
 });
 
-app.get('/pdf', async (req, res) => {
-    res.json({hola: 'hola'})
-}):
+app.get('/pdf', (req, res) => {
+    res.json({'hola': 'hola'});
+});
+
 
 app.get('/', (req, res) => {
     res.contentType("text/plain");
