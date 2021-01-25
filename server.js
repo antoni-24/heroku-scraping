@@ -73,7 +73,31 @@ app.post('/getdata',async (req, res) => {
 });
 
 app.get('/pdf',async (req, res) => {
-    res.json({'hola': 'hola'});
+    const browser = await puppeteer.launch({headless: true});
+
+    const page = await browser.newPage();
+
+    await page.goto('https://reservas.machupicchu.gob.pe/inicio');
+
+    //await page.type('#resAduGen', '6');
+    await page.$eval('#fmGeneral #resAduGen', el => el.value = '4');
+
+    //await page.click('#fmGeneral button');
+    await page.evaluate(() => {
+        document.querySelector('#fmGeneral button[type=submit]').click();
+    });
+    await page.waitForSelector('[id=fmRutaGeneral]');
+    //await page.waitFor(5000);
+
+    const data = await page.evaluate(() => {
+    const elements = document.querySelector('#fmRutaGeneral .row');
+        return elements.innerHTML;
+    });
+            
+    await browser.close();
+    
+    res.contentType("text/plain");
+    res.send(data);
 });
 
 
