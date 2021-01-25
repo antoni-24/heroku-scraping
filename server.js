@@ -38,43 +38,41 @@ const port = process.env.PORT || 8080;
 };*/
 
 app.post('/getdata',async (req, res) => {
-    const userInfo = req.body;
-
-    
+    //const userInfo = req.body;
     const browser = await puppeteer.launch({headless: true});
 
-  const page = await browser.newPage();
+    const page = await browser.newPage();
 
-  await page.goto('https://reservas.machupicchu.gob.pe/inicio');
-  await page.screenshot({path: 'mapi1.jpg'});
+    await page.goto('https://reservas.machupicchu.gob.pe/inicio');
+    await page.screenshot({path: 'mapi1.jpg'});
 
-  //await page.type('#resAduGen', '6');
-  await page.$eval('#fmGeneral #resAduGen', el => el.value = '4');
-  await page.screenshot({path: 'mapi2.jpg'});
+    //await page.type('#resAduGen', '6');
+    await page.$eval('#fmGeneral #resAduGen', el => el.value = '4');
+    await page.screenshot({path: 'mapi2.jpg'});
 
-  //await page.click('#fmGeneral button');
-  await page.evaluate(() => {
-    document.querySelector('#fmGeneral button[type=submit]').click();
-  });
-  await page.waitForSelector('[id=fmRutaGeneral]');
-  //await page.waitFor(5000);
-  await page.screenshot({path: 'mapi3.jpg'});
+    //await page.click('#fmGeneral button');
+    await page.evaluate(() => {
+        document.querySelector('#fmGeneral button[type=submit]').click();
+    });
+    await page.waitForSelector('[id=fmRutaGeneral]');
+    //await page.waitFor(5000);
+    await page.screenshot({path: 'mapi3.jpg'});
 
-  const data = await page.evaluate(() => {
-  const elements = document.querySelector('#fmRutaGeneral .row');
-    return elements.innerHTML;
-  });
-        
-  await browser.close();
-  
-  res.contentType("text/plain");
-  res.send(data);
+    const data = await page.evaluate(() => {
+    const elements = document.querySelector('#fmRutaGeneral .row');
+        return elements.innerHTML;
+    });
+            
+    await browser.close();
+    
+    res.contentType("text/plain");
+    res.send(data);
     /*getAPIData(userInfo).then(result => {
         res.status(200).json(result);
     });*/
 });
 
-app.get('/pdf', (req, res) => {
+app.get('/pdf',async (req, res) => {
     res.json({'hola': 'hola'});
 });
 
